@@ -1,0 +1,2 @@
+rootProject.name = "Recent GitHub Commits"
+include ':app'
