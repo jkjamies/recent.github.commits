@@ -4,6 +4,9 @@ buildscript {
         kotlin_version = "1.5.10"
         timber_version = "4.7.1"
         room_version = "2.3.0"
+        version_retrofit = "2.9.0"
+        version_okhttp3 = "3.7.0"
+        version_moshi = "1.11.0"
     }
     repositories {
         google()
