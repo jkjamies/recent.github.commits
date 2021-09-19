@@ -16,6 +16,16 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -41,10 +51,8 @@
             android:id="@+id/owner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
+            style="@style/EditTextStyle"
             android:hint="@string/owner"
-            android:inputType="text"
             android:autofillHints="username"
             android:text="@={viewmodel.repositoryOwner.ownerName}"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,11 +63,8 @@
             android:id="@+id/repo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin"
-            android:layout_marginEnd="@dimen/margin"
-            android:layout_marginBottom="@dimen/margin"
+            style="@style/EditTextStyle"
             android:hint="@string/repository"
-            android:inputType="text"
             android:autofillHints="name"
             android:text="@={viewmodel.repositoryOwner.repositoryName}"
             app:layout_constraintStart_toStartOf="parent"

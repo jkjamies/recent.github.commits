@@ -3,6 +3,8 @@ package com.example.android.recentgithubcommits
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.databinding.ActivityMainBinding
@@ -11,7 +13,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel by viewModels<MainActivityViewModel> { MainActivityViewModelFactory(application) }
+    private val viewModel by viewModels<MainActivityViewModel> {
+        MainActivityViewModelFactory(
+            application
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
 
         initRecyclerView()
+
+        viewModel.loading.observe(this, Observer { loading ->
+            binding.progressBar.isVisible = loading
+        })
 
         binding.searchFAB.setOnClickListener {
             viewModel.commitsApiCall()

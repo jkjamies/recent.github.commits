@@ -5,4 +5,10 @@
     <style name="TextStyle">
         <item name="android:textSize">@dimen/text_small</item>
     </style>
+
+    <style name="EditTextStyle">
+        <item name="android:layout_marginStart">@dimen/margin</item>
+        <item name="android:layout_marginEnd">@dimen/margin</item>
+        <item name="android:inputType">text</item>
+    </style>
 </resources>

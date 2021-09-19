@@ -23,6 +23,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private var _commitLiveDataList: MutableLiveData<List<CommitObject>> = MutableLiveData()
     val commitLiveDataList: LiveData<List<CommitObject>> = _commitLiveDataList
 
+    val loading: MutableLiveData<Boolean> = MutableLiveData()
+
     init {
         (application as GitHubCommitsApplication).getRetrofitComponent().inject(this)
         _repositoryOwner.value = RepositoryOwner("jkjamies", "recent.github.commits")
@@ -30,7 +32,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun commitsApiCall() {
         viewModelScope.launch {
-            val call: Call<List<CommitObject>> = service.getCommits(_repositoryOwner.value?.ownerName ?: "jkjamies", _repositoryOwner.value?.repositoryName ?: "recent.github.commits")
+            loading.value = true
+            val call: Call<List<CommitObject>> = service.getCommits(
+                _repositoryOwner.value?.ownerName ?: "jkjamies",
+                _repositoryOwner.value?.repositoryName ?: "recent.github.commits"
+            )
             try {
                 val response = call.awaitResponse()
                 if (!response.isSuccessful) {
@@ -38,9 +44,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                     _commitLiveDataList.postValue(listOf())
                 }
                 _commitLiveDataList.postValue(response.body()?.toList())
+                loading.value = false
             } catch (ex: Exception) {
                 Timber.d(ex)
                 _commitLiveDataList.postValue(listOf())
+                loading.value = false
             }
         }
     }
