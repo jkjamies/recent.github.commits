@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,25 +13,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/author"
-            android:text="@{commit.commit.author.name}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@{`Author: ` + commit.commit.author.name}"
+            tools:text="Author" />
 
         <TextView
             android:id="@+id/sha"
-            android:text="@{commit.sha}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{`Sha: ` + commit.sha}"
+            tools:text="Sha" />
 
         <TextView
             android:id="@+id/message"
-            android:text="@{commit.commit.message}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{`Message: ` + commit.commit.message}"
+            tools:text="Message goes here for commit" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:alpha="0.5"
+            android:background="@color/black50Alpha" />
 
     </LinearLayout>
 
