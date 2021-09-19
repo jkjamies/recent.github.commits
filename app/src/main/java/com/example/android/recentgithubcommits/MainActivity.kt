@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
 
         binding.searchFAB.setOnClickListener {
-            viewModel.getAllCommits()
+            viewModel.commitsApiCall()
         }
 
-        viewModel.getAllCommits()
+        viewModel.commitsApiCall()
     }
 
     private fun initRecyclerView() {

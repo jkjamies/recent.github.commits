@@ -28,9 +28,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         _repositoryOwner.value = RepositoryOwner("jkjamies", "recent.github.commits")
     }
 
-    fun commitsApiCall(repositoryOwner: RepositoryOwner?) {
+    fun commitsApiCall() {
         viewModelScope.launch {
-            _repositoryOwner.value = repositoryOwner
             val call: Call<List<CommitObject>> = service.getCommits(_repositoryOwner.value?.ownerName ?: "jkjamies", _repositoryOwner.value?.repositoryName ?: "recent.github.commits")
             try {
                 val response = call.awaitResponse()
@@ -44,9 +43,5 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 _commitLiveDataList.postValue(listOf())
             }
         }
-    }
-
-    fun getAllCommits() {
-        commitsApiCall(_repositoryOwner.value)
     }
 }
