@@ -2,27 +2,16 @@ package com.example.android.recentgithubcommits
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel: MainActivityViewModel by lazy {
-        val activity = requireNotNull(this) {
-            "You can only access the viewModel after onViewCreated()"
-        }
-
-        ViewModelProvider(
-            this,
-            MainActivityViewModel.Factory(activity.application)
-        ).get(MainActivityViewModel::class.java)
-    }
+    private val viewModel by viewModels<MainActivityViewModel> { MainActivityViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +24,11 @@ class MainActivity : AppCompatActivity() {
 
         initRecyclerView()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.commitsApiCall()
+        binding.searchFAB.setOnClickListener {
+            viewModel.getAllCommits()
         }
+
+        viewModel.getAllCommits()
     }
 
     private fun initRecyclerView() {

@@ -8,6 +8,7 @@ buildscript {
         version_okhttp3 = "4.9.1"
         version_moshi = "1.11.0"
         dagger_version = "2.35.1"
+        kotlin_coroutines_version = "1.4.1"
     }
     repositories {
         google()
