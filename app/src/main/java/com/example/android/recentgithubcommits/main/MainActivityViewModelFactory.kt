@@ -1,4 +1,4 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.main
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

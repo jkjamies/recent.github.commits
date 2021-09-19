@@ -5,9 +5,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.databinding.ActivityMainBinding
+import com.example.android.recentgithubcommits.main.CommitsAdapter
+import com.example.android.recentgithubcommits.main.MainActivityViewModel
+import com.example.android.recentgithubcommits.main.MainActivityViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 

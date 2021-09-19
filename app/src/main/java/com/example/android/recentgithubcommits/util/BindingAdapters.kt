@@ -1,7 +1,8 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.util
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.recentgithubcommits.main.CommitsAdapter
 import com.example.android.recentgithubcommits.models.CommitObject
 
 @BindingAdapter("listData")

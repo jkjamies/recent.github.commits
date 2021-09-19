@@ -1,11 +1,11 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.recentgithubcommits.CommitsAdapter.ViewHolder
+import com.example.android.recentgithubcommits.main.CommitsAdapter.ViewHolder
 import com.example.android.recentgithubcommits.databinding.ListItemBinding
 import com.example.android.recentgithubcommits.models.CommitObject
 

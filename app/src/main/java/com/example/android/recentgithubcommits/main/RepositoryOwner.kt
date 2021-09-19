@@ -1,4 +1,4 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.main
 
 import androidx.databinding.BaseObservable
 

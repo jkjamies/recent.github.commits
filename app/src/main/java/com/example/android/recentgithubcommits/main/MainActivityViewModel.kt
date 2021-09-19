@@ -1,7 +1,8 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.main
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.android.recentgithubcommits.GitHubCommitsApplication
 import com.example.android.recentgithubcommits.di.RetrofitInterface
 import com.example.android.recentgithubcommits.models.CommitObject
 import kotlinx.coroutines.launch

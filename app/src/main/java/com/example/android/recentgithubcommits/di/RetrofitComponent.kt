@@ -1,6 +1,6 @@
 package com.example.android.recentgithubcommits.di
 
-import com.example.android.recentgithubcommits.MainActivityViewModel
+import com.example.android.recentgithubcommits.main.MainActivityViewModel
 import dagger.Component
 import javax.inject.Singleton
 
