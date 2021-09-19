@@ -28,19 +28,19 @@
 
         <TextView
             android:id="@+id/sha"
+            style="@style/TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_tiny"
-            android:textSize="@dimen/text_small"
             android:text="@{`Sha: ` + commit.sha}"
             tools:text="Sha" />
 
         <TextView
             android:id="@+id/message"
+            style="@style/TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_tiny"
-            android:textSize="@dimen/text_small"
             android:text="@{`Message: ` + commit.commit.message}"
             tools:text="Message goes here for commit" />
 
