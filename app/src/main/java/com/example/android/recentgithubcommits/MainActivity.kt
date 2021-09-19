@@ -2,49 +2,10 @@ package com.example.android.recentgithubcommits
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.android.recentgithubcommits.databinding.ActivityMainBinding
-import com.example.android.recentgithubcommits.main.CommitsAdapter
-import com.example.android.recentgithubcommits.main.MainActivityViewModel
-import com.example.android.recentgithubcommits.main.MainActivityViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
-    private val viewModel by viewModels<MainActivityViewModel> {
-        MainActivityViewModelFactory(
-            application
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-        binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
-
-        initRecyclerView()
-
-        viewModel.loading.observe(this, Observer { loading ->
-            binding.progressBar.isVisible = loading
-        })
-
-        binding.searchFAB.setOnClickListener {
-            viewModel.commitsApiCall()
-        }
-
-        viewModel.commitsApiCall()
-    }
-
-    private fun initRecyclerView() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = CommitsAdapter()
+        setContentView(R.layout.activity_main)
     }
 }

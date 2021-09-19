@@ -1,88 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <variable
-            name="viewmodel"
-            type="com.example.android.recentgithubcommits.main.MainActivityViewModel" />
-
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:listData="@{viewmodel.commitLiveDataList}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/divider"/>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:background="@color/black50Alpha"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/owner" />
-
-        <EditText
-            android:id="@+id/owner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            style="@style/EditTextStyle"
-            android:hint="@string/owner"
-            android:autofillHints="username"
-            android:text="@={viewmodel.repositoryOwner.ownerName}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/repo"
-            app:layout_constraintEnd_toStartOf="@id/searchFAB" />
-
-        <EditText
-            android:id="@+id/repo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            style="@style/EditTextStyle"
-            android:hint="@string/repository"
-            android:autofillHints="name"
-            android:text="@={viewmodel.repositoryOwner.repositoryName}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/searchFAB" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/searchFAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
-            android:src="@drawable/ic_done"
-            app:fabSize="normal"
-            app:layout_anchorGravity="bottom|right|end"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@string/fab_content_description" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+    android:id="@+id/nav_host_fragment"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:defaultNavHost="true"
+    app:navGraph="@navigation/nav_graph" />
