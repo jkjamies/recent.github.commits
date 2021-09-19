@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin_small"
             android:alpha="0.5"
-            android:background="@color/black50Alpha" />
+            android:background="@color/purple_200" />
 
     </LinearLayout>
 
