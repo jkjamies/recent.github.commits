@@ -1,4 +1,4 @@
-package com.example.android.recentgithubcommits.network
+package com.example.android.recentgithubcommits.di
 
 import com.example.android.recentgithubcommits.models.CommitObject
 import retrofit2.Call
@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiService {
+interface RetrofitInterface {
     @GET("repos/{owner}/{repo}/commits")
     fun getCommits(
         @Path("owner") owner: String,

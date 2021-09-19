@@ -19,8 +19,8 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-object GitHubApi {
-    val retrofitService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
-}
+//object GitHubApi {
+//    val retrofitService: ApiService by lazy {
+//        retrofit.create(ApiService::class.java)
+//    }
+//}
