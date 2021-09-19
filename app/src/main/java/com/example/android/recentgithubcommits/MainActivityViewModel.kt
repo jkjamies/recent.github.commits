@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.android.recentgithubcommits.di.RetrofitInterface
 import com.example.android.recentgithubcommits.models.CommitObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -22,24 +26,19 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         (application as GitHubCommitsApplication).getRetrofitComponent().inject(this)
     }
 
-    fun commitsApiCall() {
+    suspend fun commitsApiCall() {
         val call: Call<List<CommitObject>> = service.getCommits("jkjamies", "python-helloworld")
-        call.enqueue(object : Callback<List<CommitObject>> {
-            override fun onResponse(
-                call: Call<List<CommitObject>>,
-                response: Response<List<CommitObject>>
-            ) {
-                if (response.isSuccessful) {
-                    Timber.d(response.message())
-                    _commitLiveDataList.value = response.body()?.toList()
-                }
+        try {
+            val response = call.awaitResponse()
+            if (!response.isSuccessful) {
+                Timber.d(response.message())
+                _commitLiveDataList.postValue(listOf())
             }
-
-            override fun onFailure(call: Call<List<CommitObject>>, t: Throwable) {
-                Timber.d(t.message)
-                _commitLiveDataList.value = listOf()
-            }
-        })
+            _commitLiveDataList.postValue(response.body()?.toList())
+        } catch (ex: Exception) {
+            Timber.d(ex)
+            _commitLiveDataList.postValue(listOf())
+        }
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

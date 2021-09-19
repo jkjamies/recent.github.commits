@@ -12,7 +12,7 @@ import java.util.*
 import javax.inject.Singleton
 
 @Module
-class RetrofitModule() {
+open class RetrofitModule() {
 
     private val moshi = Moshi.Builder()
         .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
@@ -21,7 +21,7 @@ class RetrofitModule() {
 
     @Singleton
     @Provides
-    fun provideRetrofitInstance(): Retrofit {
+    open fun provideRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -30,7 +30,7 @@ class RetrofitModule() {
 
     @Singleton
     @Provides
-    fun provideRetrofitInterface(retrofit: Retrofit): RetrofitInterface {
+    open fun provideRetrofitInterface(retrofit: Retrofit): RetrofitInterface {
         return retrofit.create(RetrofitInterface::class.java)
     }
 }
