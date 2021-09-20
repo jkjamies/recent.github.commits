@@ -4,6 +4,7 @@ import com.example.android.recentgithubcommits.di.RetrofitInterface
 import com.example.android.recentgithubcommits.util.GetCommitsMockWebServerHelper
 import com.example.android.recentgithubcommits.util.MockWebServerTestHelper.provideRetrofit
 import com.example.android.recentgithubcommits.util.MockWebServerTestHelper.setResponse
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
@@ -25,7 +26,7 @@ class MockWebServerTest {
     }
 
     @Test
-    fun `GetCommits should not be empty if response code 200`() {
+    fun `GetCommits should not be empty if response code 200`() = runBlocking {
         val getCommits = GetCommitsMockWebServerHelper(api)
         mockWebServer.setResponse("github_response.json")
         val commitsList = getCommits.execute()
@@ -33,7 +34,7 @@ class MockWebServerTest {
     }
 
     @Test
-    fun `GetCommits should Throw Error if response code 404`() {
+    fun `GetCommits should Throw Error if response code 404`() = runBlocking {
         val getCommits = GetCommitsMockWebServerHelper(api)
         mockWebServer.setResponse("github_response.json", 404)
         try {

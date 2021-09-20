@@ -1,56 +1,66 @@
 package com.example.android.recentgithubcommits.main
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.example.android.recentgithubcommits.GitHubCommitsApplication
-import com.example.android.recentgithubcommits.di.RetrofitInterface
+import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.models.CommitObject
+import com.example.android.recentgithubcommits.data.Result
+import com.example.android.recentgithubcommits.data.Result.Success
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.awaitResponse
-import timber.log.Timber
-import java.lang.Exception
 import javax.inject.Inject
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var service: RetrofitInterface
+class MainActivityViewModel @Inject constructor(private val repository: CommitsRepository) :
+    ViewModel() {
 
     private val _repositoryOwner = MutableLiveData<RepositoryOwner>()
     val repositoryOwner: LiveData<RepositoryOwner>
         get() = _repositoryOwner
 
-    private var _commitLiveDataList: MutableLiveData<List<CommitObject>> = MutableLiveData()
+    private val _forceUpdate = MutableLiveData<Boolean>(false)
+
+    private val _commitLiveDataList: LiveData<List<CommitObject>> =
+        _forceUpdate.switchMap { forceUpdate ->
+            if (forceUpdate) {
+                loading.value = true
+                viewModelScope.launch {
+                    repository.getCommits(
+                        forceUpdate,
+                        _repositoryOwner.value?.ownerName ?: "jkjamies",
+                        _repositoryOwner.value?.repositoryName ?: "recent.github.commits"
+                    )
+                    loading.value = false
+                }
+            }
+            repository.observeCommits().switchMap { filterCommits(it) }
+
+        }
     val commitLiveDataList: LiveData<List<CommitObject>> = _commitLiveDataList
 
     val loading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        (application as GitHubCommitsApplication).getRetrofitComponent().inject(this)
         _repositoryOwner.value = RepositoryOwner("jkjamies", "recent.github.commits")
     }
 
-    fun commitsApiCall() {
-        viewModelScope.launch {
-            loading.value = true
-            val call: Call<List<CommitObject>> = service.getCommits(
-                _repositoryOwner.value?.ownerName ?: "jkjamies",
-                _repositoryOwner.value?.repositoryName ?: "recent.github.commits"
-            )
-            try {
-                val response = call.awaitResponse()
-                if (!response.isSuccessful) {
-                    Timber.d(response.message())
-                    _commitLiveDataList.postValue(listOf())
-                }
-                _commitLiveDataList.postValue(response.body()?.toList())
-                loading.value = false
-            } catch (ex: Exception) {
-                Timber.d(ex)
-                _commitLiveDataList.postValue(listOf())
-                loading.value = false
-            }
+    private fun filterCommits(commitsResult: Result<List<CommitObject>>): LiveData<List<CommitObject>> {
+        val result = MutableLiveData<List<CommitObject>>()
+
+        if (commitsResult is Success) {
+            // here is where you could call for a filter using
+            // viewModelScope and only show certain ones
+
+            // add all to arraylist to avoid using !! assert on commitsResult.data
+            // this is code smell but I haven't found a cleaner solution (I am not a fan of !!)
+            val commits = arrayListOf<CommitObject>()
+            commits.addAll(commitsResult.data)
+            result.value = commits.toList()
+        } else {
+            result.value = emptyList()
         }
+
+        return result
+    }
+
+    fun getCommits(forceUpdate: Boolean) {
+        _forceUpdate.value = forceUpdate
     }
 }

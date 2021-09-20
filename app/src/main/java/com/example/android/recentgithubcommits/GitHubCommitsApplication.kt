@@ -1,12 +1,10 @@
 package com.example.android.recentgithubcommits
 
 import android.app.Application
-import com.example.android.recentgithubcommits.di.DaggerRetrofitComponent
-import com.example.android.recentgithubcommits.di.RetrofitComponent
-import com.example.android.recentgithubcommits.di.RetrofitModule
+import com.example.android.recentgithubcommits.di.*
 import timber.log.Timber
 
-class GitHubCommitsApplication: Application() {
+class GitHubCommitsApplication : Application() {
 
     private lateinit var retrofitComponent: RetrofitComponent
 
@@ -18,7 +16,10 @@ class GitHubCommitsApplication: Application() {
         }
 
         retrofitComponent = DaggerRetrofitComponent.builder()
+            .applicationModule(ApplicationModule(this))
             .retrofitModule(RetrofitModule())
+            .commitDatabaseModule(CommitDatabaseModule())
+            .commitDaoModule(CommitDaoModule())
             .build()
     }
 

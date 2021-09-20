@@ -15,22 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.GitHubCommitsApplication
 import com.example.android.recentgithubcommits.R
 import com.example.android.recentgithubcommits.databinding.FragmentMainBinding
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
 
-    private val viewModel by viewModels<MainActivityViewModel> {
-        MainActivityViewModelFactory(
-            requireContext().applicationContext as GitHubCommitsApplication
-        )
-    }
+    @Inject lateinit var viewModel: MainActivityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity().applicationContext as GitHubCommitsApplication).getRetrofitComponent().inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         binding.lifecycleOwner = this
@@ -44,11 +42,14 @@ class MainFragment : Fragment() {
         })
 
         binding.searchFAB.setOnClickListener {
-            viewModel.commitsApiCall()
+            viewModel.getCommits(true)
             hideKeyboard()
         }
 
-        viewModel.commitsApiCall()
+        // On first load, will not fetch, but this is here to demonstrate working database
+        // after fetching using FAB, close and re-open app to see it will refresh from the
+        // observed local data source (database)
+        viewModel.getCommits(false)
 
         return binding.root
     }
