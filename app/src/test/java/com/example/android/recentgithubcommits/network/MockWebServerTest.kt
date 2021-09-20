@@ -1,9 +1,9 @@
-package com.example.android.recentgithubcommits
+package com.example.android.recentgithubcommits.network
 
 import com.example.android.recentgithubcommits.di.RetrofitInterface
-import com.example.android.recentgithubcommits.util.GetCommitsMockWebServerHelper
-import com.example.android.recentgithubcommits.util.MockWebServerTestHelper.provideRetrofit
-import com.example.android.recentgithubcommits.util.MockWebServerTestHelper.setResponse
+import com.example.android.recentgithubcommits.network.util.GetCommitsMockWebServerHelper
+import com.example.android.recentgithubcommits.network.util.MockWebServerTestHelper.provideRetrofit
+import com.example.android.recentgithubcommits.network.util.MockWebServerTestHelper.setResponse
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After

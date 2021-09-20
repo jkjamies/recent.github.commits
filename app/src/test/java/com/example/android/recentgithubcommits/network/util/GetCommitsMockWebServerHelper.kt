@@ -1,4 +1,4 @@
-package com.example.android.recentgithubcommits.util
+package com.example.android.recentgithubcommits.network.util
 
 import com.example.android.recentgithubcommits.di.RetrofitInterface
 

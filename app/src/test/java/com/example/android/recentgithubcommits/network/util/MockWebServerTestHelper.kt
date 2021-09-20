@@ -1,4 +1,4 @@
-package com.example.android.recentgithubcommits.util
+package com.example.android.recentgithubcommits.network.util
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
