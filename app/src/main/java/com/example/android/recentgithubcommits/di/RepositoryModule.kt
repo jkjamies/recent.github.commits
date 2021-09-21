@@ -23,6 +23,10 @@ class RepositoryModule {
     @Retention(RUNTIME)
     annotation class CommitsRemoteDataSource
 
+    @Qualifier
+    @Retention(RUNTIME)
+    annotation class Repository
+
     @Singleton
     @CommitsLocalDataSource
     @Provides
@@ -38,11 +42,11 @@ class RepositoryModule {
     }
 
     @Singleton
-    @CommitsRemoteDataSource
+    @Repository
     @Provides
     fun provideRepository(
-        localDataSource: CommitDataSource,
-        remoteDataSource: CommitDataSource
+        @CommitsLocalDataSource localDataSource: CommitDataSource,
+        @CommitsRemoteDataSource remoteDataSource: CommitDataSource
     ): CommitsRepositoryInterface {
         return CommitsRepository(localDataSource, remoteDataSource)
     }

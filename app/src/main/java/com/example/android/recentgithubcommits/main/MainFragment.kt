@@ -9,24 +9,27 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.GitHubCommitsApplication
 import com.example.android.recentgithubcommits.R
-import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.databinding.FragmentMainBinding
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
 
-    private val viewModel by viewModels<MainFragmentViewModel> {
-        MainFragmentViewModel.MainFragmentViewModelFactory(
-            (requireContext().applicationContext as GitHubCommitsApplication)
-        )
-    }
+//    private val viewModel by viewModels<MainFragmentViewModel> {
+//        MainFragmentViewModel.MainFragmentViewModelFactory(
+//            application.commitsRepository
+//        )
+//    }
+
+    private lateinit var viewModel: MainFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +39,12 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         binding.lifecycleOwner = this
+
+        val factory = (requireActivity().applicationContext as GitHubCommitsApplication).providerFactory
+        ViewModelProvider(this, factory).get(MainFragmentViewModel::class.java).also {
+            viewModel = it
+        }
+
         binding.viewmodel = viewModel
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context)

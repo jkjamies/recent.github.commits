@@ -1,17 +1,16 @@
 package com.example.android.recentgithubcommits.main
 
-import android.content.Context
 import androidx.lifecycle.*
-import com.example.android.recentgithubcommits.GitHubCommitsApplication
+import com.example.android.recentgithubcommits.data.CommitsRepositoryInterface
 import com.example.android.recentgithubcommits.models.CommitObject
 import com.example.android.recentgithubcommits.data.Result
 import com.example.android.recentgithubcommits.data.Result.Success
+import com.example.android.recentgithubcommits.di.RepositoryModule.Repository
 import com.example.android.recentgithubcommits.main.models.RepositoryOwner
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainFragmentViewModel(application: Context) : ViewModel() {
-
-    private val repository = (application as GitHubCommitsApplication).commitsRepository
+class MainFragmentViewModel @Inject constructor(@Repository private val repository: CommitsRepositoryInterface) : ViewModel() {
 
     private val _repositoryOwner = MutableLiveData<RepositoryOwner>()
     val repositoryOwner: LiveData<RepositoryOwner>
@@ -68,9 +67,9 @@ class MainFragmentViewModel(application: Context) : ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     class MainFragmentViewModelFactory(
-        private val application: Context
+        private val repository: CommitsRepositoryInterface
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>) =
-            (MainFragmentViewModel(application) as T)
+            (MainFragmentViewModel(repository) as T)
     }
 }

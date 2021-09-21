@@ -17,6 +17,7 @@ import javax.inject.Singleton
         CommitDatabaseModule::class,
         CommitDaoModule::class,
         RepositoryModule::class,
+        ViewModelModule::class,
         AndroidSupportInjectionModule::class
     ]
 )

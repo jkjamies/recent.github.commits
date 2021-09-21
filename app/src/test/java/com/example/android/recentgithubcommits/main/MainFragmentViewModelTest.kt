@@ -1,8 +1,6 @@
 package com.example.android.recentgithubcommits.main
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
 import com.example.android.recentgithubcommits.util.*
 import com.example.android.recentgithubcommits.util.commit1
 import com.example.android.recentgithubcommits.util.commit2
@@ -15,8 +13,6 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class MainFragmentViewModelTest {
-
-    private lateinit var context: Context
 
     // Subject under test
     private lateinit var viewModel: MainFragmentViewModel
@@ -35,13 +31,10 @@ class MainFragmentViewModelTest {
 
     @Before
     fun setupViewModel() {
-        // We initialise the tasks to 3, with one active and two completed
         commitsRepository = FakeTestRepository()
         commitsRepository.addCommits(commit1, commit2, commit3)
 
-        context = ApplicationProvider.getApplicationContext()
-
-        viewModel = MainFragmentViewModel(context)
+        viewModel = MainFragmentViewModel(commitsRepository)
     }
 
     @After
