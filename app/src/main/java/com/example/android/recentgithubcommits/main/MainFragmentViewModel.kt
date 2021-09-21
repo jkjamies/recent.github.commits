@@ -1,16 +1,15 @@
 package com.example.android.recentgithubcommits.main
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.*
 import com.example.android.recentgithubcommits.GitHubCommitsApplication
-import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.models.CommitObject
 import com.example.android.recentgithubcommits.data.Result
 import com.example.android.recentgithubcommits.data.Result.Success
 import com.example.android.recentgithubcommits.main.models.RepositoryOwner
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel(private val application: Application) : ViewModel() {
+class MainFragmentViewModel(application: Context) : ViewModel() {
 
     private val repository = (application as GitHubCommitsApplication).commitsRepository
 
@@ -69,7 +68,7 @@ class MainFragmentViewModel(private val application: Application) : ViewModel() 
 
     @Suppress("UNCHECKED_CAST")
     class MainFragmentViewModelFactory(
-        private val application: Application
+        private val application: Context
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>) =
             (MainFragmentViewModel(application) as T)

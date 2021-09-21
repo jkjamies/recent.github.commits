@@ -1,15 +1,22 @@
 package com.example.android.recentgithubcommits.main
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.android.recentgithubcommits.util.MainCoroutineRule
+import androidx.test.core.app.ApplicationProvider
+import com.example.android.recentgithubcommits.util.*
 import com.example.android.recentgithubcommits.util.commit1
 import com.example.android.recentgithubcommits.util.commit2
 import com.example.android.recentgithubcommits.util.commit3
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class MainFragmentViewModelTest {
+
+    private lateinit var context: Context
 
     // Subject under test
     private lateinit var viewModel: MainFragmentViewModel
@@ -32,6 +39,36 @@ class MainFragmentViewModelTest {
         commitsRepository = FakeTestRepository()
         commitsRepository.addCommits(commit1, commit2, commit3)
 
-//        viewModel = MainFragmentViewModel(commitsRepository)
+        context = ApplicationProvider.getApplicationContext()
+
+        viewModel = MainFragmentViewModel(context)
     }
+
+    @After
+    fun tearDown() {
+
+    }
+
+    @Test
+    fun getCommits_forced_setsLiveData() {
+        // When getting commits
+        viewModel.getCommits(true)
+
+        // Then the live data is represented correctly
+        val value = viewModel.commitLiveDataList.getOrAwaitValue()
+
+        assert(value.containsAll(listOf(commit1, commit2, commit3)))
+    }
+
+    @Test
+    fun getCommits_notForced_setsLiveData() {
+        // When getting commits
+        viewModel.getCommits(false)
+
+        // Then the live data is represented correctly
+        val value = viewModel.commitLiveDataList.getOrAwaitValue()
+
+        assert(value.containsAll(listOf(commit1, commit2, commit3)))
+    }
+
 }
