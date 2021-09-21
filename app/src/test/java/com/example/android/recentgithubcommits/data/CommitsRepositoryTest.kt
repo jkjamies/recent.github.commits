@@ -7,6 +7,9 @@ import com.example.android.recentgithubcommits.data.Result.Success
 import com.example.android.recentgithubcommits.data.util.FakeDataSource
 import com.example.android.recentgithubcommits.util.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual
 import org.junit.Assert.*
@@ -16,6 +19,12 @@ import org.junit.Test
 import java.util.*
 
 class DefaultCommitRepositoryTest {
+
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
+
+    @ExperimentalCoroutinesApi
+    private val testScope = TestCoroutineScope(dispatcher)
 
     private val commit1 = CommitObject(
         "url1",
@@ -91,40 +100,62 @@ class DefaultCommitRepositoryTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun refreshCommits_requestsAllCommitsFromRemoteDataSource() = mainCoroutineRule.runBlockingTest {
-        // When commits are requested from the commits repository
-        commitsRepository.refreshCommits(
-            false,
-            "jkjamies",
-            "recent.github.commits"
-        )
+    fun refreshCommits_requestsAllCommitsFromRemoteDataSource() =
+        mainCoroutineRule.runBlockingTest {
+            // When commits are requested from the commits repository
+            commitsRepository.refreshCommits(
+                false,
+                "jkjamies",
+                "recent.github.commits"
+            )
 
-        // force update false to grab from local database
-        val commits = commitsRepository.getCommits(
-            false,
-            "jkjamies",
-            "recent.github.commits"
-        ) as Success
+            // force update false to grab from local database
+            val commits = commitsRepository.getCommits(
+                false,
+                "jkjamies",
+                "recent.github.commits"
+            ) as Success
 
-        // Then commits are equal to remote commits because of fetch from local db
-        assertThat(commits.data, IsEqual(remoteCommits))
-    }
+            // Then commits are equal to remote commits because of fetch from local db
+            assertThat(commits.data, IsEqual(remoteCommits))
+        }
 
     @ExperimentalCoroutinesApi
     @Test
     fun clear_clearsOutAllCommitsFromLocalDataSource() = mainCoroutineRule.runBlockingTest {
         // When commits are requested from the commits repository
-        commitsRepository.clear()
+        testScope.launch {
+            commitsRepository.clear()
 
-        // force update false to grab from local database
-        val commits = commitsRepository.getCommits(
-            false,
-            "jkjamies",
-            "recent.github.commits"
-        ) as Success
+            // force update false to grab from local database
+            val commits = commitsRepository.getCommits(
+                false,
+                "jkjamies",
+                "recent.github.commits"
+            ) as Success
 
-        // Then commits are equal to remote commits because of fetch from local db
-        assertThat(commits.data, IsEqual(listOf()))
+            // Then commits are equal to remote commits because of fetch from local db
+            assertThat(commits.data, IsEqual(listOf()))
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun insertCommits_InsertsAllCommitsIntoLocalDataSource() = mainCoroutineRule.runBlockingTest {
+        // When commits are requested from the commits repository
+        testScope.launch {
+            commitsRepository.insertCommits(remoteCommits)
+
+            // force update false to grab from local database
+            val commits = commitsRepository.getCommits(
+                false,
+                "jkjamies",
+                "recent.github.commits"
+            ) as Success
+
+            // Then commits are equal to remote commits because of inserting that list
+            assertThat(commits.data, IsEqual(remoteCommits))
+        }
     }
 
     @ExperimentalCoroutinesApi
