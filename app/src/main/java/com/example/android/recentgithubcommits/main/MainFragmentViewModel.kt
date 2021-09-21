@@ -8,7 +8,7 @@ import com.example.android.recentgithubcommits.data.Result.Success
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainActivityViewModel @Inject constructor(private val repository: CommitsRepository) :
+class MainFragmentViewModel @Inject constructor(private val repository: CommitsRepository) :
     ViewModel() {
 
     private val _repositoryOwner = MutableLiveData<RepositoryOwner>()

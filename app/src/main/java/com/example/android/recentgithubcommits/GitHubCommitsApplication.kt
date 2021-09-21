@@ -6,7 +6,7 @@ import timber.log.Timber
 
 class GitHubCommitsApplication : Application() {
 
-    private lateinit var retrofitComponent: RetrofitComponent
+    private lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -15,7 +15,7 @@ class GitHubCommitsApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        retrofitComponent = DaggerRetrofitComponent.builder()
+        appComponent = DaggerAppComponent.builder()
             .applicationModule(ApplicationModule(this))
             .retrofitModule(RetrofitModule())
             .commitDatabaseModule(CommitDatabaseModule())
@@ -23,7 +23,7 @@ class GitHubCommitsApplication : Application() {
             .build()
     }
 
-    fun getRetrofitComponent(): RetrofitComponent {
-        return retrofitComponent
+    fun getAppComponent(): AppComponent {
+        return appComponent
     }
 }

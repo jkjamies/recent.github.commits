@@ -13,7 +13,7 @@ import javax.inject.Singleton
         CommitDaoModule::class
     ]
 )
-interface RetrofitComponent {
+interface AppComponent {
 
     fun inject(mainFragment: MainFragment)
 }
