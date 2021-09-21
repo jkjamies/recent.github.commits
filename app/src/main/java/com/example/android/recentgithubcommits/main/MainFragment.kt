@@ -9,10 +9,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.recentgithubcommits.GitHubCommitsApplication
 import com.example.android.recentgithubcommits.R
+import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.databinding.FragmentMainBinding
 import javax.inject.Inject
 
@@ -20,14 +22,21 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
 
-    @Inject lateinit var viewModel: MainFragmentViewModel
+    private val viewModel by viewModels<MainFragmentViewModel> {
+        MainFragmentViewModel.MainFragmentViewModelFactory(
+            (requireContext().applicationContext as GitHubCommitsApplication)
+                .commitsRepository
+        )
+    }
+
+    @Inject
+    lateinit var commitsRepository: CommitsRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity().applicationContext as GitHubCommitsApplication).getAppComponent().inject(this)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
         binding.lifecycleOwner = this

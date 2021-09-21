@@ -6,10 +6,8 @@ import com.example.android.recentgithubcommits.models.CommitObject
 import com.example.android.recentgithubcommits.data.Result
 import com.example.android.recentgithubcommits.data.Result.Success
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class MainFragmentViewModel @Inject constructor(private val repository: CommitsRepository) :
-    ViewModel() {
+class MainFragmentViewModel(private val repository: CommitsRepository) : ViewModel() {
 
     private val _repositoryOwner = MutableLiveData<RepositoryOwner>()
     val repositoryOwner: LiveData<RepositoryOwner>
@@ -62,5 +60,13 @@ class MainFragmentViewModel @Inject constructor(private val repository: CommitsR
 
     fun getCommits(forceUpdate: Boolean) {
         _forceUpdate.value = forceUpdate
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    class MainFragmentViewModelFactory(
+        private val repository: CommitsRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>) =
+            (MainFragmentViewModel(repository) as T)
     }
 }

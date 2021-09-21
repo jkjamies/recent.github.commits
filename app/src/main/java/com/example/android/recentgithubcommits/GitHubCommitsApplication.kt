@@ -1,12 +1,23 @@
 package com.example.android.recentgithubcommits
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
+import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.di.*
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import timber.log.Timber
+import javax.inject.Inject
 
-class GitHubCommitsApplication : Application() {
 
-    private lateinit var appComponent: AppComponent
+class GitHubCommitsApplication : DaggerApplication() {
+
+    @Inject
+    lateinit var commitsRepository: CommitsRepository
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build();
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -14,16 +25,10 @@ class GitHubCommitsApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-
-        appComponent = DaggerAppComponent.builder()
-            .applicationModule(ApplicationModule(this))
-            .retrofitModule(RetrofitModule())
-            .commitDatabaseModule(CommitDatabaseModule())
-            .commitDaoModule(CommitDaoModule())
-            .build()
     }
 
-    fun getAppComponent(): AppComponent {
-        return appComponent
-    }
+//    @VisibleForTesting
+//    fun getCommitsRepository(): CommitsRepository {
+//        return commitsRepository
+//    }
 }

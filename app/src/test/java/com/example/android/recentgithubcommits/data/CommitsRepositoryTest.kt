@@ -72,12 +72,64 @@ class DefaultCommitRepositoryTest {
         commitRemoteDataSource = FakeDataSource(remoteCommits.toMutableList())
         commitLocalDataSource = FakeDataSource(localCommits.toMutableList())
         // Get a reference to the class under test.
-        commitsRepository = CommitsRepository(commitRemoteDataSource, commitLocalDataSource)
+        commitsRepository = CommitsRepository(commitLocalDataSource, commitRemoteDataSource)
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun getTasks_requestsAllTasksFromRemoteDataSource() = mainCoroutineRule.runBlockingTest {
+    fun getCommits_requestsAllCommitsFromLocalDataSource() = mainCoroutineRule.runBlockingTest {
+        // When commits are requested from the commits repository
+        val commits = commitsRepository.getCommits(
+            false,
+            "jkjamies",
+            "recent.github.commits"
+        ) as Success
+
+        // Then commits are loaded from the remote data source
+        assertThat(commits.data, IsEqual(localCommits))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun refreshCommits_requestsAllCommitsFromRemoteDataSource() = mainCoroutineRule.runBlockingTest {
+        // When commits are requested from the commits repository
+        commitsRepository.refreshCommits(
+            false,
+            "jkjamies",
+            "recent.github.commits"
+        )
+
+        // force update false to grab from local database
+        val commits = commitsRepository.getCommits(
+            false,
+            "jkjamies",
+            "recent.github.commits"
+        ) as Success
+
+        // Then commits are equal to remote commits because of fetch from local db
+        assertThat(commits.data, IsEqual(remoteCommits))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun clear_clearsOutAllCommitsFromLocalDataSource() = mainCoroutineRule.runBlockingTest {
+        // When commits are requested from the commits repository
+        commitsRepository.clear()
+
+        // force update false to grab from local database
+        val commits = commitsRepository.getCommits(
+            false,
+            "jkjamies",
+            "recent.github.commits"
+        ) as Success
+
+        // Then commits are equal to remote commits because of fetch from local db
+        assertThat(commits.data, IsEqual(listOf()))
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun getCommits_requestsAllCommitsFromRemoteDataSource() = mainCoroutineRule.runBlockingTest {
         // When commits are requested from the commits repository
         val commits = commitsRepository.getCommits(
             true,

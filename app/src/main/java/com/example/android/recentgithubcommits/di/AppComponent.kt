@@ -1,8 +1,14 @@
 package com.example.android.recentgithubcommits.di
 
-import com.example.android.recentgithubcommits.main.MainFragment
+import android.app.Application
+import com.example.android.recentgithubcommits.GitHubCommitsApplication
+import com.example.android.recentgithubcommits.data.CommitsRepository
+import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
@@ -10,10 +16,19 @@ import javax.inject.Singleton
         ApplicationModule::class,
         RetrofitModule::class,
         CommitDatabaseModule::class,
-        CommitDaoModule::class
+        CommitDaoModule::class,
+        RepositoryModule::class,
+        AndroidSupportInjectionModule::class
     ]
 )
-interface AppComponent {
+interface AppComponent : AndroidInjector<GitHubCommitsApplication> {
 
-    fun inject(mainFragment: MainFragment)
+//    fun getTasksRepository(): CommitsRepository
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+        fun build(): AppComponent
+    }
 }

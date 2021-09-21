@@ -5,8 +5,8 @@ import com.example.android.recentgithubcommits.models.CommitObject
 import com.example.android.recentgithubcommits.util.wrapEspressoIdlingResource
 import com.example.android.recentgithubcommits.data.Result.Success
 import com.example.android.recentgithubcommits.data.Result.Error
-import com.example.android.recentgithubcommits.data.local.CommitsLocalDataSource
-import com.example.android.recentgithubcommits.data.remote.CommitsRemoteDataSource
+import com.example.android.recentgithubcommits.di.RepositoryModule.CommitsLocalDataSource
+import com.example.android.recentgithubcommits.di.RepositoryModule.CommitsRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class CommitsRepository @Inject constructor(
-    private val localDataSource: CommitsLocalDataSource,
-    private val remoteDataSource: CommitsRemoteDataSource
+    @CommitsLocalDataSource private val localDataSource: CommitDataSource,
+    @CommitsRemoteDataSource private val remoteDataSource: CommitDataSource
 ) : CommitsRepositoryInterface {
 
     override fun observeCommits(): LiveData<Result<List<CommitObject>>> {
