@@ -1,6 +1,8 @@
 package com.example.android.recentgithubcommits.di
 
 import com.example.android.recentgithubcommits.data.CommitDataSource
+import com.example.android.recentgithubcommits.data.CommitsRepository
+import com.example.android.recentgithubcommits.data.CommitsRepositoryInterface
 import com.example.android.recentgithubcommits.data.local.CommitDao
 import com.example.android.recentgithubcommits.data.local.CommitsLocalDataSource
 import com.example.android.recentgithubcommits.data.remote.CommitsRemoteDataSource
@@ -33,5 +35,15 @@ class RepositoryModule {
     @Provides
     fun provideRemoteDataSource(retrofitInterface: RetrofitInterface): CommitDataSource {
         return CommitsRemoteDataSource(retrofitInterface)
+    }
+
+    @Singleton
+    @CommitsRemoteDataSource
+    @Provides
+    fun provideRepository(
+        localDataSource: CommitDataSource,
+        remoteDataSource: CommitDataSource
+    ): CommitsRepositoryInterface {
+        return CommitsRepository(localDataSource, remoteDataSource)
     }
 }

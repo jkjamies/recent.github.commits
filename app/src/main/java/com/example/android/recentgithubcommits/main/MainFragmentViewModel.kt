@@ -1,13 +1,18 @@
 package com.example.android.recentgithubcommits.main
 
+import android.app.Application
 import androidx.lifecycle.*
+import com.example.android.recentgithubcommits.GitHubCommitsApplication
 import com.example.android.recentgithubcommits.data.CommitsRepository
 import com.example.android.recentgithubcommits.models.CommitObject
 import com.example.android.recentgithubcommits.data.Result
 import com.example.android.recentgithubcommits.data.Result.Success
+import com.example.android.recentgithubcommits.main.models.RepositoryOwner
 import kotlinx.coroutines.launch
 
-class MainFragmentViewModel(private val repository: CommitsRepository) : ViewModel() {
+class MainFragmentViewModel(private val application: Application) : ViewModel() {
+
+    private val repository = (application as GitHubCommitsApplication).commitsRepository
 
     private val _repositoryOwner = MutableLiveData<RepositoryOwner>()
     val repositoryOwner: LiveData<RepositoryOwner>
@@ -21,9 +26,9 @@ class MainFragmentViewModel(private val repository: CommitsRepository) : ViewMod
                 loading.value = true
                 viewModelScope.launch {
                     repository.getCommits(
-                        forceUpdate,
                         _repositoryOwner.value?.ownerName ?: "jkjamies",
-                        _repositoryOwner.value?.repositoryName ?: "recent.github.commits"
+                        _repositoryOwner.value?.repositoryName ?: "recent.github.commits",
+                        forceUpdate
                     )
                     loading.value = false
                 }
@@ -64,9 +69,9 @@ class MainFragmentViewModel(private val repository: CommitsRepository) : ViewMod
 
     @Suppress("UNCHECKED_CAST")
     class MainFragmentViewModelFactory(
-        private val repository: CommitsRepository
+        private val application: Application
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>) =
-            (MainFragmentViewModel(repository) as T)
+            (MainFragmentViewModel(application) as T)
     }
 }

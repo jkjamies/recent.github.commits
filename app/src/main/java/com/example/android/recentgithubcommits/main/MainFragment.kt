@@ -25,12 +25,8 @@ class MainFragment : Fragment() {
     private val viewModel by viewModels<MainFragmentViewModel> {
         MainFragmentViewModel.MainFragmentViewModelFactory(
             (requireContext().applicationContext as GitHubCommitsApplication)
-                .commitsRepository
         )
     }
-
-    @Inject
-    lateinit var commitsRepository: CommitsRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,

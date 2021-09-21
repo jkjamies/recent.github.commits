@@ -2,7 +2,6 @@ package com.example.android.recentgithubcommits.di
 
 import android.app.Application
 import com.example.android.recentgithubcommits.GitHubCommitsApplication
-import com.example.android.recentgithubcommits.data.CommitsRepository
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -22,8 +21,6 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent : AndroidInjector<GitHubCommitsApplication> {
-
-//    fun getTasksRepository(): CommitsRepository
 
     @Component.Builder
     interface Builder {

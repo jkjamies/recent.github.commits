@@ -26,7 +26,7 @@ class CommitsRepository @Inject constructor(
         }
     }
 
-    override suspend fun getCommits(forceUpdate: Boolean, owner: String, repo: String): Result<List<CommitObject>> {
+    override suspend fun getCommits(owner: String, repo: String, forceUpdate: Boolean): Result<List<CommitObject>> {
         wrapEspressoIdlingResource {
             if (forceUpdate) {
                 try {
@@ -48,7 +48,7 @@ class CommitsRepository @Inject constructor(
         }
     }
 
-    override suspend fun refreshCommits(forceUpdate: Boolean, owner: String, repo: String) {
+    override suspend fun refreshCommits(owner: String, repo: String) {
         wrapEspressoIdlingResource {
             updateCommitsFromRemoteDataSource(owner, repo)
         }
