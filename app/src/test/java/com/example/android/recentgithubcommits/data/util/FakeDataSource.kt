@@ -19,7 +19,7 @@ class FakeDataSource(var commits: MutableList<CommitObject>? = mutableListOf()) 
     override suspend fun getCommits(owner: String, repo: String): Result<List<CommitObject>> {
         commits?.let { return Success(ArrayList(it)) }
         return Error(
-            Exception("Tasks not found")
+            Exception("Commits not found")
         )
     }
 
